@@ -2,65 +2,41 @@ using CreditCalculator.Models;
 
 namespace CreditCalculator.Services.Calculator
 {
-    internal class DifferentiatedCreditCalculator : ICreditCalculator
+    internal class DifferentiatedCreditCalculator : Calculator
     {
-        public List<MonthlyPayment> GetMonthlyPayments(CreditInfo creditInfo)
+        public override List<MonthlyPayment> GetMonthlyPayments(CreditInfo creditInfo)
         {
-            Console.WriteLine($"Start Calculating 1");
             var paymentsList = new List<MonthlyPayment>();
-            var date = creditInfo.DateOfIssue;
-            var nextPaymentDate = date.AddMonths(1);
+            
+            var paymentsCount = GetPaymentsCount(creditInfo.DateOfIssue, creditInfo.DateOfClosing);
             var dailyPercent = GetDailyPercent(creditInfo.Percent);
-            Console.WriteLine($"Start Calculating 2");
-            var mainPayment = creditInfo.TotalSum / 
-                              GetPaymentsCount(creditInfo.DateOfIssue, creditInfo.DateOfClosing);
-            var remainingAmount = creditInfo.TotalSum;
-            Console.WriteLine($"Start Calculating 3");
-            Console.WriteLine($"Main payment = {mainPayment}");
-            while (true)
+            var mainPayment = creditInfo.TotalSum / paymentsCount;
+            var creditBody = creditInfo.TotalSum;
+
+            for (int i = 0; i < paymentsCount; i++)
             {
-                var daysInMonth = (nextPaymentDate - date).TotalDays;
+                var lastDate = creditInfo.DateOfIssue.AddMonths(i);
+                var nextDate = lastDate.AddMonths(1);
+                
+                if (nextDate > creditInfo.DateOfClosing)
+                {
+                    nextDate = creditInfo.DateOfClosing;
+                }
+                
+                var daysInMonth = (nextDate - lastDate).Days;
                 var percentForMonth = daysInMonth * dailyPercent;
                 var payment = new MonthlyPayment();
-                payment.DateOfPayment = nextPaymentDate;
-                payment.BodyPayment = mainPayment;
-                payment.PercentsPayment = remainingAmount * (decimal)percentForMonth;
-                remainingAmount -= mainPayment;
-                payment.RemainingAmount = remainingAmount;
-                paymentsList.Add(payment);
-                
-                date = nextPaymentDate;
+                payment.PaymentNumber = i + 1;
+                payment.DateOfPayment = nextDate;
+                payment.BodyPayment = Decimal.Min(mainPayment, creditBody);
+                payment.PercentsPayment = creditBody * percentForMonth;
+                creditBody -= payment.BodyPayment;
+                payment.RemainingAmount = creditBody;
 
-                if (nextPaymentDate == creditInfo.DateOfClosing)
-                {
-                    break;
-                }
-                
-                if (nextPaymentDate.AddMonths(1) >= creditInfo.DateOfClosing)
-                {
-                    nextPaymentDate = creditInfo.DateOfClosing;
-                }
-                else
-                {
-                    nextPaymentDate = nextPaymentDate.AddMonths(1);
-                }
+                paymentsList.Add(payment);
             }
             
             return paymentsList;
         }
-        private int GetPaymentsCount(DateTime issue, DateTime closing)
-        {
-            int count = 0;
-            do
-            {
-                count++;
-                issue = issue.AddMonths(1);
-            } 
-            while (issue <= closing);
-            
-            return count;
-        }
-        private double GetDailyPercent(double percent) => 
-            percent / 365.0d / 100.0d;
     }
 }

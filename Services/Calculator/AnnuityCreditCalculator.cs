@@ -2,9 +2,9 @@ using CreditCalculator.Models;
 
 namespace CreditCalculator.Services.Calculator
 {
-    internal class AnnuityCreditCalculator : ICreditCalculator
+    internal class AnnuityCreditCalculator : Calculator
     {
-        public List<MonthlyPayment> GetMonthlyPayments(CreditInfo creditInfo)
+        public override List<MonthlyPayment> GetMonthlyPayments(CreditInfo creditInfo)
         {
             return new List<MonthlyPayment>();
         }
