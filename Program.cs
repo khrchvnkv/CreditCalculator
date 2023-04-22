@@ -1,25 +1,21 @@
+using CreditCalculator.Services.Calculator;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddMvc();
+builder.Services.AddSingleton<CalculatorService>();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
+app.UseRouting();
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
 app.MapControllers();
-
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute("Default", "{controller=Home}/{action=Index}");
+});
 app.Run();
