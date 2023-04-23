@@ -4,6 +4,6 @@ namespace CreditCalculator.Services.Calculator
 {
     internal interface ICreditCalculator
     {
-        List<MonthlyPayment> GetMonthlyPayments(CreditInfo creditInfo);
+        List<MonthlyPayment> GetAllPayments(CreditInfo creditInfo);
     }
 }

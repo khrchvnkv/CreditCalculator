@@ -4,8 +4,8 @@ namespace CreditCalculator.Services.Calculator
 {
     public abstract class Calculator : ICreditCalculator
     {
-        public abstract List<MonthlyPayment> GetMonthlyPayments(CreditInfo creditInfo);
-        protected decimal GetDailyPercent(decimal percent) => percent / 365.0m / 100m;
+        public abstract List<MonthlyPayment> GetAllPayments(CreditInfo creditInfo);
+        protected float GetDailyPercent(float percent) => percent / 365 / 100.0f;
         protected int GetPaymentsCount(DateTime issue, DateTime closing)
         {
             int count = 1;
