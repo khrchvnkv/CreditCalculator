@@ -6,7 +6,7 @@ namespace CreditCalculator.Services.Calculator
     {
         public abstract List<MonthlyPayment> GetAllPayments(CreditInfo creditInfo);
         protected float GetDailyPercent(float percent) => percent / 365 / 100.0f;
-        protected int GetPaymentsCount(DateTime issue, DateTime closing)
+        public int GetPaymentsCount(DateTime issue, DateTime closing)
         {
             int count = 1;
             while (issue.AddMonths(count) < closing)
@@ -14,7 +14,6 @@ namespace CreditCalculator.Services.Calculator
                 count++;
             }
             
-            Console.WriteLine($"Total Payments count = {count}");
             return count;
         }
     }
