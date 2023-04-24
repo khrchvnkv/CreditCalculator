@@ -13,6 +13,5 @@ namespace CreditCalculator.Models
         public DateTime DateOfClosing { get; set; }
         public float InterestRate { get; set; }
         public CalculationType CreditType { get; set; }
-        public int PaymentDay { get; set; }
     }
 }

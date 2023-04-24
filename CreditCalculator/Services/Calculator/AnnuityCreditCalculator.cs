@@ -15,7 +15,8 @@ namespace CreditCalculator.Services.Calculator
             var creditBody = creditInfo.TotalSum;
 
             var rate = creditInfo.InterestRate / MonthsInOneYear / 100.0f;
-            var coefficient = (decimal)(rate + rate / (Math.Pow(1 + rate, paymentsCount) - 1));
+            var coefficient = (decimal)(rate * Math.Pow(1 + rate, paymentsCount) /
+                                        (Math.Pow(1 + rate, paymentsCount) - 1));
             var monthlyPayment = creditInfo.TotalSum * coefficient;
             
             for (int i = 0; i < paymentsCount; i++)
@@ -27,7 +28,7 @@ namespace CreditCalculator.Services.Calculator
                 {
                     nextDate = creditInfo.DateOfClosing;
                 }
-                
+
                 var daysInMonth = (nextDate - lastDate).Days;
                 var monthlyInterestRate = (decimal)(daysInMonth * dailyPercent);
                 
@@ -35,11 +36,11 @@ namespace CreditCalculator.Services.Calculator
 
                 var payment = new MonthlyPayment();
                 payment.PaymentNumber = i + 1;
-                payment.DateOfPayment = nextDate;
+                payment.Date = nextDate;
                 payment.InterestPayment = interestShare;
-                payment.BodyPayment = Decimal.Min(monthlyPayment - payment.InterestPayment, creditBody);
-                payment.TotalPayment = payment.BodyPayment + payment.InterestPayment;
-                creditBody -= payment.BodyPayment;
+                payment.PrincipalPayment = Decimal.Min(monthlyPayment - payment.InterestPayment, creditBody);
+                payment.TotalPayment = payment.PrincipalPayment + payment.InterestPayment;
+                creditBody -= payment.PrincipalPayment;
                 payment.RemainingAmount = creditBody;
 
                 paymentsList.Add(payment);

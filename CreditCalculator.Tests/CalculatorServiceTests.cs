@@ -17,7 +17,7 @@ namespace CreditCalculator.Tests
         public void WhenValidatingIncorrectDatesCreditInfo_ThenAssertFalse()
         {
             var calculatorService = new CalculatorService();
-            var today = DateTime.Now;
+            var today = DateTime.Today;
             var creditInfo = GetCorrectCreditInfo();
             creditInfo.DateOfIssue = today.AddMonths(1);
             creditInfo.DateOfClosing = today;
@@ -30,15 +30,6 @@ namespace CreditCalculator.Tests
             var calculatorService = new CalculatorService();
             var creditInfo = GetCorrectCreditInfo();
             creditInfo.InterestRate = -10.0f;
-            var validationStatus = calculatorService.IsValidCreditInfo(creditInfo);
-            Assert.False(validationStatus);
-        }
-        [Fact]
-        public void WhenValidatingIncorrectPaymentDayCreditInfo_ThenAssertFalse()
-        {
-            var calculatorService = new CalculatorService();
-            var creditInfo = GetCorrectCreditInfo();
-            creditInfo.PaymentDay = 0;
             var validationStatus = calculatorService.IsValidCreditInfo(creditInfo);
             Assert.False(validationStatus);
         }
@@ -59,7 +50,6 @@ namespace CreditCalculator.Tests
                 DateOfIssue = DateTime.Today,
                 DateOfClosing = DateTime.Today.AddMonths(6),
                 InterestRate = 10.0f,
-                PaymentDay = 10,
                 TotalSum = 1_000_000
             };
         }
