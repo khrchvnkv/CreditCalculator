@@ -1,6 +1,9 @@
 # CreditCalculator
 
 ## POST : http://localhost:5181/api/Credit/calculate-monthly-payments
+
+Request body in json format includes information:
+
 <code>{
         "TotalSum":1000000,
         "DateOfIssue":"2024-01-01",
