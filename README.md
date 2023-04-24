@@ -9,8 +9,8 @@
     "CreditType":1
 }</code>
 
-###Calculation of payments on annuity and differentiated credits. The "CreditType" parameter specifies how the data is calculated
+### Calculation of payments on annuity and differentiated credits. The "CreditType" parameter specifies how the data is calculated
 1 - annuity
 2 - differentiated
 
-###Return value: list of monthly payments with details
+### Return value: list of monthly payments with details
