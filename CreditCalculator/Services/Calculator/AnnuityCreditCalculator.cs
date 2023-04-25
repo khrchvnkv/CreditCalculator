@@ -43,7 +43,10 @@ namespace CreditCalculator.Services.Calculator
                 creditBody -= payment.PrincipalPayment;
                 payment.RemainingAmount = creditBody;
 
-                paymentsList.Add(payment);
+                if (payment.TotalPayment > 0.0m)
+                {
+                    paymentsList.Add(payment);
+                }
             }
             
             return paymentsList;

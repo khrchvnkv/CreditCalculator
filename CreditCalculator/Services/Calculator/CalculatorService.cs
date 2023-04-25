@@ -23,7 +23,7 @@ namespace CreditCalculator.Services.Calculator
             bool IsValidDate() => creditInfo.DateOfClosing >= creditInfo.DateOfIssue &&
                                   creditInfo.DateOfIssue >= DateTime.Today;
             bool IsValidCreditSum() => creditInfo.TotalSum >= 0.0m;
-            bool IsValidInterestRate() => creditInfo.InterestRate >= 0.0f;
+            bool IsValidInterestRate() => creditInfo.InterestRate is >= 0.0f and <= 365.0f;
         }
         public List<MonthlyPayment> GetMonthlyPaymentsFromCreditInfo(CreditInfo creditInfo)
         {
